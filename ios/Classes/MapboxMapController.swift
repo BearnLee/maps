@@ -865,8 +865,8 @@ class MapboxMapController: NSObject, FlutterPlatformView, MGLMapViewDelegate, Ma
                 "originLat": origin.latitude,
                 "currentLng": coordinate.longitude,
                 "currentLat": coordinate.latitude,
-                "deltaLng": coordinate.longitude - previous.longitude,
-                "deltaLat": coordinate.latitude - previous.latitude,
+                "deltaLng": 0,
+                "deltaLat": 0,
             ])
             dragFeature = nil
             originDragCoordinate = nil
