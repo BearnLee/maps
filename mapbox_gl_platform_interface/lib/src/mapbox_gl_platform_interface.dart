@@ -166,6 +166,7 @@ abstract class MapboxGlPlatform {
     onInfoWindowTappedPlatform.clear();
     onFeatureTappedPlatform.clear();
     onFeatureDraggedPlatform.clear();
+    onFeatureDragFinished.clear();
     onCameraMoveStartedPlatform.clear();
     onCameraMovePlatform.clear();
     onCameraIdlePlatform.clear();

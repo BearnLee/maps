@@ -343,6 +343,21 @@ class MapboxWebGlPlatform extends MapboxGlPlatform
     });
   }
 
+  ///add by ljs 20220310 - web端需要重新设置size
+  @override
+  void resize(){
+    Timer(Duration(microseconds: 10), () {
+      var container = _map.getContainer();
+      var canvas = _map.getCanvas();
+      var widthMismatch = canvas.clientWidth != container.clientWidth;
+      var heightMismatch = canvas.clientHeight != container.clientHeight;
+      if (widthMismatch || heightMismatch) {
+        _map.resize();
+      }
+    });
+  }
+
+
   void _onMapClick(Event e) {
     final features = _map.queryRenderedFeatures([e.point.x, e.point.y],
         {"layers": _interactiveFeatureLayerIds.toList()});
