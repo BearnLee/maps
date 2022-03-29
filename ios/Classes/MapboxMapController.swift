@@ -854,9 +854,9 @@ class MapboxMapController: NSObject, FlutterPlatformView, MGLMapViewDelegate, Ma
                 }
             }
         } else if sender.state == UIGestureRecognizer.State.ended || sender.numberOfTouches != 1
-            let feature = dragFeature
-            let id = feature.identifier
-            let previous = previousDragCoordinate
+            let feature = dragFeature,
+            let id = feature.identifier,
+            let previous = previousDragCoordinate,
             let origin = originDragCoordinate {
             sender.state = UIGestureRecognizer.State.ended
             mapView.allowsScrolling = scrollingEnabled
