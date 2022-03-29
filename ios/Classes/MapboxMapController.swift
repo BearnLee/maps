@@ -853,7 +853,7 @@ class MapboxMapController: NSObject, FlutterPlatformView, MGLMapViewDelegate, Ma
                     break
                 }
             }
-        } else if sender.state == UIGestureRecognizer.State.ended || sender.numberOfTouches != 1
+        } else if sender.state == UIGestureRecognizer.State.ended || sender.numberOfTouches != 1,
             let feature = dragFeature,
             let id = feature.identifier,
             let previous = previousDragCoordinate,
