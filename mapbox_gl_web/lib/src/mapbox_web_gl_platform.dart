@@ -24,6 +24,7 @@ class MapboxWebGlPlatform extends MapboxGlPlatform
 
   String? _navigationControlPosition;
   NavigationControl? _navigationControl;
+  bool _isDragging = false;
 
   @override
   Widget buildView(
@@ -111,6 +112,18 @@ class MapboxWebGlPlatform extends MapboxGlPlatform
   }
 
   _onMouseUp(Event e) {
+    if(_isDragging){
+      _isDragging = false;
+      final current = LatLng(e.lngLat.lat.toDouble(), e.lngLat.lng.toDouble());
+      final payload = {
+        'id': _draggedFeatureId,
+        'point': Point<double>(e.point.x.toDouble(), e.point.y.toDouble()),
+        'origin': _dragOrigin,
+        'current': current,
+        'delta': current - (_dragPrevious ?? _dragOrigin!),
+      };
+      onFeatureDragFinished(payload);
+    }
     _draggedFeatureId = null;
     _dragPrevious = null;
     _dragOrigin = null;
@@ -127,6 +140,7 @@ class MapboxWebGlPlatform extends MapboxGlPlatform
         'current': current,
         'delta': current - (_dragPrevious ?? _dragOrigin!),
       };
+      _isDragging = true;
       _dragPrevious = current;
       onFeatureDraggedPlatform(payload);
     }

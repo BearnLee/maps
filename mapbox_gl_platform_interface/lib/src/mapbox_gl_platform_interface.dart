@@ -18,6 +18,9 @@ abstract class MapboxGlPlatform {
 
   final onFeatureTappedPlatform = ArgumentCallbacks<Map<String, dynamic>>();
 
+  ///add by ljs  拖动结束监听
+  final onFeatureDragFinished = ArgumentCallbacks<Map<String, dynamic>>();
+
   final onFeatureDraggedPlatform = ArgumentCallbacks<Map<String, dynamic>>();
 
   final onCameraMoveStartedPlatform = ArgumentCallbacks<void>();
@@ -151,6 +154,11 @@ abstract class MapboxGlPlatform {
       double? maxzoom});
 
   Future<void> addSource(String sourceId, SourceProperties properties);
+
+  ///add by ljs 20220310
+  void resize(){
+    throw UnimplementedError('resize() has not been implemented.');
+  }
 
   @mustCallSuper
   void dispose() {

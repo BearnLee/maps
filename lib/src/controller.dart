@@ -80,6 +80,16 @@ class MapboxMapController extends ChangeNotifier {
       }
     });
 
+    _mapboxGlPlatform.onFeatureDragFinished.add((payload) {
+      for (final fun in List<OnFeatureDragnCallback>.from(onFeatureDragFinished)) {
+        fun(payload["id"],
+            point: payload["point"],
+            origin: payload["origin"],
+            current: payload["current"],
+            delta: payload["delta"]);
+      }
+    });
+
     _mapboxGlPlatform.onCameraMoveStartedPlatform.add((_) {
       _isCameraMoving = true;
       notifyListeners();
@@ -202,6 +212,9 @@ class MapboxMapController extends ChangeNotifier {
   final onFeatureTapped = <OnFeatureInteractionCallback>[];
 
   final onFeatureDrag = <OnFeatureDragnCallback>[];
+
+  ///add by ljs
+  final onFeatureDragFinished = <OnFeatureDragnCallback>[];
 
   /// Callbacks to receive tap events for info windows on symbols
   @Deprecated("InfoWindow tapped is no longer supported")
@@ -1084,6 +1097,11 @@ class MapboxMapController extends ChangeNotifier {
   /// Add a new source to the map
   Future<void> addSource(String sourceid, SourceProperties properties) async {
     return _mapboxGlPlatform.addSource(sourceid, properties);
+  }
+
+  ///add by ljs 20220310
+  void resize(){
+    return _mapboxGlPlatform.resize();
   }
 
   /// Add a layer to the map with the given properties

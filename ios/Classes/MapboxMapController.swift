@@ -856,6 +856,22 @@ class MapboxMapController: NSObject, FlutterPlatformView, MGLMapViewDelegate, Ma
         } else if sender.state == UIGestureRecognizer.State.ended || sender.numberOfTouches != 1 {
             sender.state = UIGestureRecognizer.State.ended
             mapView.allowsScrolling = scrollingEnabled
+            let feature = dragFeature
+            let id = feature.identifier
+            let previous = previousDragCoordinate
+            let origin = originDragCoordinate
+            print("in drag finished")
+            channel?.invokeMethod("feature#onDragFinished", arguments: [
+                "id": id,
+                "x": point.x,
+                "y": point.y,
+                "originLng": origin.longitude,
+                "originLat": origin.latitude,
+                "currentLng": coordinate.longitude,
+                "currentLat": coordinate.latitude,
+                "deltaLng": coordinate.longitude - previous.longitude,
+                "deltaLat": coordinate.latitude - previous.latitude,
+            ])
             dragFeature = nil
             originDragCoordinate = nil
             previousDragCoordinate = nil

@@ -3,10 +3,12 @@
 // found in the LICENSE file.
 
 import 'dart:async'; // ignore: unnecessary_import
+import 'dart:convert';
 import 'dart:core';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -48,8 +50,23 @@ class PlaceSymbolBodyState extends State<PlaceSymbolBody> {
 
   void _onStyleLoaded() {
     addImageFromAsset("assetImage", "assets/symbols/custom-icon.png");
-    addImageFromUrl(
-        "networkImage", Uri.parse("https://via.placeholder.com/50"));
+    addImageFromUrl("networkImage", Uri.parse("https://via.placeholder.com/50"));
+
+    controller?.onFeatureDrag.add(_onFeatureDrag);
+    controller?.onFeatureDragFinished.add(_onFeatureDragFinished);
+  }
+
+  void _onFeatureDrag(id, {required LatLng current, required LatLng delta, required LatLng origin, required Point<double> point}) {
+    print('current' + jsonEncode(current));
+    print('delta' + jsonEncode(delta));
+    print('origin' + jsonEncode(origin));
+  }
+
+  void _onFeatureDragFinished(id, {required LatLng current, required LatLng delta, required LatLng origin, required Point<double> point}){
+    print('拖动结束');
+    print('current' + jsonEncode(current));
+    print('delta' + jsonEncode(delta));
+    print('origin' + jsonEncode(origin));
   }
 
   @override
@@ -123,12 +140,14 @@ class PlaceSymbolBodyState extends State<PlaceSymbolBody> {
             textHaloBlur: 1,
             textHaloColor: '#ffffff',
             textHaloWidth: 0.8,
+      draggable: true
           )
         : SymbolOptions(
             geometry: geometry,
             textField: 'Airport',
             textOffset: Offset(0, 0.8),
             iconImage: iconImage,
+        draggable: true
           );
   }
 
@@ -291,6 +310,7 @@ class PlaceSymbolBodyState extends State<PlaceSymbolBody> {
             height: 200.0,
             child: MapboxMap(
               accessToken: MapsDemo.ACCESS_TOKEN,
+              styleString: 'mapbox://styles/bearnlee/cky2du84p86ca14peo7zx8qkg',
               onMapCreated: _onMapCreated,
               onStyleLoadedCallback: _onStyleLoaded,
               initialCameraPosition: const CameraPosition(

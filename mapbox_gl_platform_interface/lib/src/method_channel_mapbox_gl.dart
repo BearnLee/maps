@@ -46,7 +46,27 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
           'delta': LatLng(deltaLat, deltaLng),
         });
         break;
+      case 'feature#onDragFinished':
+        final id = call.arguments['id'];
+        final double x = call.arguments['x'];
+        final double y = call.arguments['y'];
+        final double originLat = call.arguments['originLat'];
+        final double originLng = call.arguments['originLng'];
 
+        final double currentLat = call.arguments['currentLat'];
+        final double currentLng = call.arguments['currentLng'];
+
+        final double deltaLat = call.arguments['deltaLat'];
+        final double deltaLng = call.arguments['deltaLng'];
+
+        onFeatureDragFinished({
+          'id': id,
+          'point': Point<double>(x, y),
+          'origin': LatLng(originLat, originLng),
+          'current': LatLng(currentLat, currentLng),
+          'delta': LatLng(deltaLat, deltaLng),
+        });
+        break;
       case 'camera#onMoveStarted':
         onCameraMoveStartedPlatform(null);
         break;
