@@ -858,15 +858,15 @@ class MapboxMapController: NSObject, FlutterPlatformView, MGLMapViewDelegate, Ma
             mapView.allowsScrolling = scrollingEnabled
             print("in drag finished")
             channel?.invokeMethod("feature#onDragFinished", arguments: [
-                "id": id,
+                "id": dragFeature!.identifier,
                 "x": point.x,
                 "y": point.y,
-                "originLng": origin.longitude,
-                "originLat": origin.latitude,
+                "originLng": originDragCoordinate!.longitude,
+                "originLat": originDragCoordinate!.latitude,
                 "currentLng": coordinate.longitude,
                 "currentLat": coordinate.latitude,
-                "deltaLng": 0,
-                "deltaLat": 0,
+                 "deltaLng": coordinate.longitude - previousDragCoordinate!.longitude,
+                 "deltaLat": coordinate.latitude - previousDragCoordinate!.latitude,
             ])
             dragFeature = nil
             originDragCoordinate = nil
