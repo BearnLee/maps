@@ -853,13 +853,13 @@ class MapboxMapController: NSObject, FlutterPlatformView, MGLMapViewDelegate, Ma
                     break
                 }
             }
-        } else if sender.state == UIGestureRecognizer.State.ended || sender.numberOfTouches != 1 {
-            sender.state = UIGestureRecognizer.State.ended
-            mapView.allowsScrolling = scrollingEnabled
+        } else if sender.state == UIGestureRecognizer.State.ended || sender.numberOfTouches != 1
             let feature = dragFeature
             let id = feature.identifier
             let previous = previousDragCoordinate
-            let origin = originDragCoordinate
+            let origin = originDragCoordinate {
+            sender.state = UIGestureRecognizer.State.ended
+            mapView.allowsScrolling = scrollingEnabled
             print("in drag finished")
             channel?.invokeMethod("feature#onDragFinished", arguments: [
                 "id": id,
