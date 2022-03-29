@@ -1675,20 +1675,20 @@ final class MapboxMapController
   void stopDragging(MoveGestureDetector detector) {
     PointF pointf = detector.getFocalPoint();
     LatLng current = mapboxMap.getProjection().fromScreenLocation(pointf);
+    if(draggedFeature != null){
+      final Map<String, Object> arguments = new HashMap<>(9);
+      arguments.put("id", draggedFeature.id());
+      arguments.put("x", pointf.x);
+      arguments.put("y", pointf.y);
 
-    final Map<String, Object> arguments = new HashMap<>(9);
-    arguments.put("id", draggedFeature.id());
-    arguments.put("x", pointf.x);
-    arguments.put("y", pointf.y);
-
-    arguments.put("originLng", dragOrigin.getLongitude());
-    arguments.put("originLat", dragOrigin.getLatitude());
-    arguments.put("currentLng", current.getLongitude());
-    arguments.put("currentLat", current.getLatitude());
-    arguments.put("deltaLng", current.getLongitude() - dragPrevious.getLongitude());
-    arguments.put("deltaLat", current.getLatitude() - dragPrevious.getLatitude());
-    methodChannel.invokeMethod("feature#onDragFinished", arguments);
-
+      arguments.put("originLng", dragOrigin.getLongitude());
+      arguments.put("originLat", dragOrigin.getLatitude());
+      arguments.put("currentLng", current.getLongitude());
+      arguments.put("currentLat", current.getLatitude());
+      arguments.put("deltaLng", current.getLongitude() - dragPrevious.getLongitude());
+      arguments.put("deltaLat", current.getLatitude() - dragPrevious.getLatitude());
+      methodChannel.invokeMethod("feature#onDragFinished", arguments);
+    }
     draggedFeature = null;
     dragOrigin = null;
     dragPrevious = null;
