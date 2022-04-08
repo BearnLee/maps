@@ -24,6 +24,7 @@ class MapboxMapController: NSObject, FlutterPlatformView, MGLMapViewDelegate, Ma
     private var trackCameraPosition = false
     private var myLocationEnabled = false
     private var scrollingEnabled = true
+    private var isDragging = false
 
     private var interactiveFeatureLayerIds = Set<String>()
     private var addedShapesByLayer = [String: MGLShape]()
@@ -856,8 +857,9 @@ class MapboxMapController: NSObject, FlutterPlatformView, MGLMapViewDelegate, Ma
         } else if sender.state == UIGestureRecognizer.State.ended || sender.numberOfTouches != 1{
             sender.state = UIGestureRecognizer.State.ended
             mapView.allowsScrolling = scrollingEnabled
-            if(dragFeature != nil){
+            if(dragFeature != nil && isDragging){
                 print("in drag finished")
+                isDragging = false;
                 channel?.invokeMethod("feature#onDragFinished", arguments: [
                     "id": dragFeature!.identifier,
                     "x": point.x,
@@ -878,7 +880,7 @@ class MapboxMapController: NSObject, FlutterPlatformView, MGLMapViewDelegate, Ma
                   let previous = previousDragCoordinate,
                   let origin = originDragCoordinate
         {
-            print("in drag")
+            isDragging = true;
             channel?.invokeMethod("feature#onDrag", arguments: [
                 "id": id,
                 "x": point.x,
